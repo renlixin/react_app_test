@@ -10,5 +10,4 @@ let store = createStore(reducer, applyMiddleware(({ getState }) => {
     return returnValue
   }
 }))
-
 export default store
