@@ -1,31 +1,34 @@
 import React, { Component } from 'react';
-import './App.less'
-import Text from '../Text'
-
-export default class App extends Component {
-	static defaultProps = {}
-
+import action from '../store/action/index'
+class Text extends Component {
 	constructor (props) {
 		super(props)
 		let {store: {getState}} = this.props
 		let {vote: {n}} = getState()
 		this.state = {n}
 	}
+
 	componentDidMount () {
 		let {store: {getState, subscribe}}= this.props
-		subscribe(() => {
+		let unsubscribe = subscribe(() => {
 			let { vote: {n} } = getState()
 			this.setState({
 				n
 			})
 		})
+		// unsubscribe()  // 把当前追加的方法移除，解除绑定的方式
 	}
+
 	render () {
 		let { n } = this.state
-		let { store } = this.props
+		let { store: {dispatch} } = this.props
 		return (<div>
-			<div>{n}</div>
-      <Text store={store}/>
+			{n}
+			<button onClick={() => {
+				dispatch(action.vote.support())
+			}}>点击</button>
 		</div>)
 	}
 }
+
+export default Text
